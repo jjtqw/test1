@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/easyui/jquery.min.js"></script>
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <link type="text/css" href="/easyui/themes/icon.css" rel="stylesheet">
+    <link type="text/css" href="/easyui/themes/default/easyui.css" rel="stylesheet">
+    <script>
+        $(function () {
+            $("#dg").datagrid({
+                url:'/query',
+                columns:[
+                    [
+                        {title:'编号',field:'id',width:100},
+                        {title:'部门',field:'name',width:100},
+                        {title:'时间',field:'dates',width:100},
+                    ]
+                ],
+                fitColumns:true,
+                toolbar:'#tb'
+            })
+        })
+        function deletes() {
+            var row=$("#dg").datagrid("getSelected");
+            if(row!=null){
+                $.post('/del',{id:row.id},function (data) {
+                    if(data==1){
+                        alert('删除成功');
+                        $('#dg').datagrid('reload');
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+<body>
+    <table id="dg"></table>
+    <div id="tb">
+        <a href="javascript:deletes()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+    </div>
+</body>
+</html>
